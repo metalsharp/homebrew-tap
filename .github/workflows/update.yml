@@ -1,0 +1,43 @@
+name: Update cask
+
+on:
+  schedule:
+    - cron: "23 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-metalsharp-cask
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update from latest release
+        run: python3 scripts/update-cask.py
+
+      - name: Add local tap
+        run: brew tap metalsharp/tap "$GITHUB_WORKSPACE"
+
+      - name: Validate cask
+        run: |
+          brew style Casks/metalsharp.rb
+          brew audit --cask --strict metalsharp/tap/metalsharp
+
+      - name: Commit update
+        run: |
+          if git diff --quiet -- Casks/metalsharp.rb; then
+            echo "Cask is already current."
+            exit 0
+          fi
+          version="$(ruby -ne 'puts $1 if $_ =~ /^  version "([^"]+)"$/' Casks/metalsharp.rb)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Casks/metalsharp.rb
+          git commit -m "Update MetalSharp to ${version}"
+          git push

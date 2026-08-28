@@ -1,0 +1,27 @@
+name: Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  cask:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add local tap
+        run: brew tap metalsharp/tap "$GITHUB_WORKSPACE"
+
+      - name: Style
+        run: brew style Casks/metalsharp.rb
+
+      - name: Audit
+        run: brew audit --cask --strict metalsharp/tap/metalsharp
+
+      - name: Verify release metadata
+        run: python3 scripts/update-cask.py --check
