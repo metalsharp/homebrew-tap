@@ -16,7 +16,7 @@ jobs:
   update:
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Update from latest release
         run: python3 scripts/update-cask.py

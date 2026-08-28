@@ -12,7 +12,7 @@ jobs:
   cask:
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Add local tap
         run: brew tap metalsharp/tap "$GITHUB_WORKSPACE"
