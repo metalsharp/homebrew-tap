@@ -18,9 +18,25 @@ cask "metalsharp" do
 
   app "MetalSharp.app"
 
+  postflight do
+    app_path = "#{appdir}/MetalSharp.app"
+    system_command "/usr/bin/xattr",
+                   args: ["-cr", app_path]
+    system_command "/usr/bin/codesign",
+                   args: [
+                     "--force",
+                     "--deep",
+                     "--sign", "-",
+                     "--preserve-metadata=entitlements,requirements,flags,runtime",
+                     app_path
+                   ]
+    system_command "/usr/bin/codesign",
+                   args: ["--verify", "--deep", "--strict", app_path]
+  end
+
   caveats <<~EOS
-    MetalSharp is currently distributed with an ad-hoc signature. If macOS
-    blocks the first launch, open System Settings > Privacy & Security and
-    choose Open Anyway for MetalSharp.
+    MetalSharp is not notarized. This cask clears downloaded-file attributes,
+    refreshes the app's ad-hoc signature, and verifies that signature after
+    every install or upgrade.
   EOS
 end

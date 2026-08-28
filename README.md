@@ -9,6 +9,8 @@ brew install --cask metalsharp/tap/metalsharp
 ```
 
 Homebrew will add this tap automatically and install `MetalSharp.app` in `/Applications`.
+The cask clears downloaded-file extended attributes, refreshes the app's ad-hoc
+signature, and verifies the installed bundle after every install or upgrade.
 
 ## Upgrade
 
