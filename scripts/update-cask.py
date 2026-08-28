@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 import urllib.request
@@ -17,9 +18,16 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 def latest_release() -> tuple[str, str]:
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "metalsharp-homebrew-tap",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    if token := os.environ.get("GITHUB_TOKEN"):
+        headers["Authorization"] = f"Bearer {token}"
     request = urllib.request.Request(
         RELEASE_API,
-        headers={"Accept": "application/vnd.github+json", "User-Agent": "metalsharp-homebrew-tap"},
+        headers=headers,
     )
     with urllib.request.urlopen(request, timeout=30) as response:
         release = json.load(response)

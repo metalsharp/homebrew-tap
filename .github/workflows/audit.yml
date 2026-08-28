@@ -25,3 +25,5 @@ jobs:
 
       - name: Verify release metadata
         run: python3 scripts/update-cask.py --check
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

@@ -20,6 +20,8 @@ jobs:
 
       - name: Update from latest release
         run: python3 scripts/update-cask.py
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Add local tap
         run: brew tap metalsharp/tap "$GITHUB_WORKSPACE"
