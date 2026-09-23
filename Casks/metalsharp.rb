@@ -1,6 +1,6 @@
 cask "metalsharp" do
-  version "0.71.0"
-  sha256 "6be50a8bb18779cb026997fee78e15d88ce86ff974e49a2c1aaa579bdbe4b595"
+  version "0.72.0"
+  sha256 "5bafd1778390fdc616436011c678dd46cc3ad4ce641b24e2d2e2024d510ab825"
 
   url "https://github.com/metalsharp/MetalSharp/releases/download/v#{version}/MetalSharp-#{version}-arm64.dmg"
   name "MetalSharp"
