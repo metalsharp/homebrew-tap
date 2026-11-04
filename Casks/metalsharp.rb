@@ -18,7 +18,7 @@ cask "metalsharp" do
 
   app "MetalSharp.app"
 
-  postflight do
+  postflight_steps do
     app_path = "#{appdir}/MetalSharp.app"
     system_command "/usr/bin/xattr",
                    args: ["-cr", app_path]
